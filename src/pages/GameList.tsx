@@ -264,7 +264,8 @@ const GameList: React.FC = () => {
         <div className="w-full md:w-3/4 flex flex-col items-center">
           {!loading && (
             <>
-              <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} onToggleOrder={handleSortOrderChange} sortOrder={sortOrder} />
+
               <div className="flex w-full justify-end mb-4">
                 <div className="flex items-center">
                   <span className="text-white mr-2">Sort by:</span>
