@@ -102,11 +102,10 @@ const GameList: React.FC = () => {
     localStorage.setItem('genres', JSON.stringify(genres));
   }, [genres]);
 
-
   useEffect(() => {
     extractGenres(gameList);
   }, [gameList]);
-  
+
   const extractGenres = (games: Game[]) => {
     const genreSet = new Set<string>();
     games.forEach((game) => {
@@ -235,13 +234,17 @@ const GameList: React.FC = () => {
     setError('');
   };
 
-  const getFavoriteGames = (): Game[] => {
-    return gameList.filter((game) => game.isFavorite);
+  const getFilteredGames = (): Game[] => {
+    if (selectedGenre === 'All') {
+      return gameList;
+    } else if (selectedGenre === 'Favoritados') {
+      return favoriteGames;
+    } else {
+      return gameList.filter((game) => game.genre === selectedGenre);
+    }
   };
 
-  const filteredGames = selectedGenre === 'Favoritados' ? getFavoriteGames() : gameList;
-
-  const searchedGames = filteredGames.filter((game) => {
+  const searchedGames = getFilteredGames().filter((game) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
       game.title.toLowerCase().includes(lowerCaseSearchTerm) ||
@@ -281,6 +284,7 @@ const GameList: React.FC = () => {
                   selectedGenre={selectedGenre}
                   filterByGenre={filterByGenre}
                   onFilterFavorites={filterFavorites}
+                  setGenres={setGenres}
                 />
                 <div className="flex flex-col items-center w-full">
                   {loading ? (
