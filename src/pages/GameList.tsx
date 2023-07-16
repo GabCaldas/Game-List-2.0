@@ -188,6 +188,7 @@ const GameList: React.FC = () => {
   };
 
   const sortGamesByRating = (games: Game[], order: 'asc' | 'desc') => {
+    setSortOrder(order);
     const sortedGames = [...games];
     sortedGames.sort((a, b) => {
       if (a.rating === 0 && b.rating === 0) {
