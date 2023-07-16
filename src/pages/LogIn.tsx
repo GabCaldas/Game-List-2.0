@@ -27,7 +27,7 @@ const LogIn = () => {
 
   const navigate = useNavigate();
 
-  const handleSignIn = async (e) => {
+  const handleSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     setLoading(true);

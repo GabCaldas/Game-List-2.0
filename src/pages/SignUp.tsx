@@ -17,7 +17,7 @@ const SignUp = () => {
   const [registrationError, setRegistrationError] = useState('');
   const navigate = useNavigate();
 
-  const handleSignUp = (e) => {
+  const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setRegistrationError('');
 
