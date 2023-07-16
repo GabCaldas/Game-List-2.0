@@ -11,6 +11,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const SignUp = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
@@ -93,7 +94,7 @@ const SignUp = () => {
               Already have an account?
             </p>
             <Link
-              to="/login"
+              to="/"
               className="font-normal text-base underline text-white"
             >
               Login

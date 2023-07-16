@@ -9,7 +9,6 @@ import React, { useEffect, useState } from 'react';
 import SearchBar from '@/components/SearchBar';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-
 const firebaseConfig = {
   apiKey: "AIzaSyDF6me6wK5ed-uUFk73ABAI0UZ9fteiHXI",
   authDomain: "react-gamelist.firebaseapp.com",
