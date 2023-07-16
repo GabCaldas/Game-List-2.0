@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 interface SearchBarProps {
   onSearch: (searchTerm: string) => void;
-  onToggleOrder: () => void;
-  sortOrder: string;
+  onToggleOrder: (order: 'asc' | 'desc') => void;
+  sortOrder: 'asc' | 'desc';
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onToggleOrder, sortOrder }) => {
