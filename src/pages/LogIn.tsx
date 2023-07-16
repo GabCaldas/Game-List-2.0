@@ -1,10 +1,10 @@
-import appmFull from '@/app/assets/appmastersfull.png';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import appmFull from 'src/app/assets/appmastersfull.png';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDF6me6wK5ed-uUFk73ABAI0UZ9fteiHXI",

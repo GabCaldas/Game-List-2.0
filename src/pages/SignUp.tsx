@@ -1,12 +1,17 @@
 
-import appmFull from '@/app/assets/appmastersfull.png';
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import appmFull from 'src/app/assets/appmastersfull.png';
 
-const firebaseConfig = { apiKey: "AIzaSyDF6me6wK5ed-uUFk73ABAI0UZ9fteiHXI", authDomain: "react-gamelist.firebaseapp.com", projectId: "react-gamelist", storageBucket: "react-gamelist.appspot.com", messagingSenderId: "810660847157", appId: "1:810660847157:web:20cab83508205aefbd5b7c" };
+const firebaseConfig = { apiKey: 
+  "AIzaSyDF6me6wK5ed-uUFk73ABAI0UZ9fteiHXI",
+  authDomain: "react-gamelist.firebaseapp.com",
+   projectId: "react-gamelist", storageBucket:
+    "react-gamelist.appspot.com", messagingSenderId: 
+    "810660847157", appId: "1:810660847157:web:20cab83508205aefbd5b7c" };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
