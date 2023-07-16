@@ -18,6 +18,7 @@ const firebaseConfig = {
   messagingSenderId: "810660847157",
   appId: "1:810660847157:web:20cab83508205aefbd5b7c"
 };
+
 const app = firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 
@@ -42,10 +43,8 @@ const GameList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [genres, setGenres] = useState<Genre[]>([]);
   const [error, setError] = useState('');
-  const [displayCount, setDisplayCount] = useState(30);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [selectedGenre, setSelectedGenre] = useState<string>('All');
-  const [showNoFavoritesMessage, setShowNoFavoritesMessage] = useState(false);
 
   const [favoriteGames, setFavoriteGames] = useState<Game[]>([]);
 
@@ -264,8 +263,7 @@ const GameList: React.FC = () => {
         <div className="w-full md:w-3/4 flex flex-col items-center">
           {!loading && (
             <>
-            <SearchBar onSearch={handleSearch} onToggleOrder={handleSortOrderChange} sortOrder={sortOrder} />
-
+              <SearchBar onSearch={handleSearch} onToggleOrder={handleSortOrderChange} sortOrder={sortOrder} />
               <div className="flex w-full justify-end mb-4">
                 <div className="flex items-center">
                   <span className="text-white mr-2">Sort by:</span>
