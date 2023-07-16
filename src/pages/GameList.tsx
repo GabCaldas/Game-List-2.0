@@ -18,8 +18,6 @@ const firebaseConfig = {
   messagingSenderId: "810660847157",
   appId: "1:810660847157:web:20cab83508205aefbd5b7c"
 };
-
-
 const app = firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 
@@ -44,10 +42,12 @@ const GameList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [genres, setGenres] = useState<Genre[]>([]);
   const [error, setError] = useState('');
-  const [displayCount, setDisplayCount] = useState(30); // Quantidade inicial de jogos exibidos
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); // Ordem de classificação dos jogos
-  const [selectedGenre, setSelectedGenre] = useState<string>('All'); // Gênero selecionado para filtragem
-  const [showNoFavoritesMessage, setShowNoFavoritesMessage] = useState(false); // Mostrar mensagem de nenhum favorito
+  const [displayCount, setDisplayCount] = useState(30);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [selectedGenre, setSelectedGenre] = useState<string>('All');
+  const [showNoFavoritesMessage, setShowNoFavoritesMessage] = useState(false);
+
+  const [favoriteGames, setFavoriteGames] = useState<Game[]>([]);
 
   const url = 'https://games-test-api-81e9fb0d564a.herokuapp.com/api/data/';
   const headers = {
@@ -102,16 +102,17 @@ const GameList: React.FC = () => {
     localStorage.setItem('genres', JSON.stringify(genres));
   }, [genres]);
 
+
+  useEffect(() => {
+    extractGenres(gameList);
+  }, [gameList]);
+  
   const extractGenres = (games: Game[]) => {
     const genreSet = new Set<string>();
     games.forEach((game) => {
       genreSet.add(game.genre);
     });
-    const genreArray = [
-      { name: 'All', active: true },
-      { name: 'Favoritados', active: false },
-      ...Array.from(genreSet).map((genre) => ({ name: genre, active: false })),
-    ];
+    const genreArray = Array.from(genreSet).map((genre) => ({ name: genre, active: false }));
     setGenres(genreArray);
   };
 
@@ -124,6 +125,10 @@ const GameList: React.FC = () => {
   };
 
   const addFavoriteGame = (gameId: number) => {
+    const game = gameList.find((game) => game.id === gameId);
+    if (game) {
+      setFavoriteGames([...favoriteGames, game]);
+    }
     const gameRef = firestore.collection('favorites').doc(gameId.toString());
     gameRef
       .set({ gameId })
@@ -136,6 +141,7 @@ const GameList: React.FC = () => {
   };
 
   const removeFavoriteGame = (gameId: number) => {
+    setFavoriteGames(favoriteGames.filter((game) => game.id !== gameId));
     const gameRef = firestore.collection('favorites').doc(gameId.toString());
     gameRef
       .delete()
@@ -189,11 +195,10 @@ const GameList: React.FC = () => {
       if (a.rating === 0 && b.rating === 0) {
         return 0;
       } else if (a.rating === 0) {
-        return 1; 
+        return 1;
       } else if (b.rating === 0) {
         return -1;
       } else {
-  
         if (order === 'asc') {
           return a.rating - b.rating;
         } else {
@@ -203,13 +208,13 @@ const GameList: React.FC = () => {
     });
     return sortedGames;
   };
-  
+
   const handleSortOrderChange = (order: 'asc' | 'desc') => {
     setSortOrder(order);
   };
 
   const handleReloadPage = () => {
-    window.location.reload();
+    window.location.href = '/';
   };
 
   const ErrorPopup: React.FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {
@@ -220,7 +225,7 @@ const GameList: React.FC = () => {
           className="bg-blue-150 text-white px-4 py-4 rounded-md hover:bg-blue-200"
           onClick={handleReloadPage}
         >
-          Recarregar Página
+          Ir para a página de Login
         </button>
       </div>
     );
@@ -230,22 +235,23 @@ const GameList: React.FC = () => {
     setError('');
   };
 
+  const getFavoriteGames = (): Game[] => {
+    return gameList.filter((game) => game.isFavorite);
+  };
 
-  const filteredGames = gameList.filter((game) => {
-    if (selectedGenre === 'All') {
-      return true;
-    } else if (selectedGenre === 'Favoritados') {
-      return game.isFavorite;
-    } else {
-      return game.genre === selectedGenre;
-    }
+  const filteredGames = selectedGenre === 'Favoritados' ? getFavoriteGames() : gameList;
+
+  const searchedGames = filteredGames.filter((game) => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return (
+      game.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+      game.genre.toLowerCase().includes(lowerCaseSearchTerm)
+    );
   });
 
+  const sortedGames = sortGamesByRating(searchedGames, sortOrder);
 
-  const sortedGames = sortGamesByRating(filteredGames, sortOrder);
-
-  
-  const hasFavorites = filteredGames.some((game) => game.isFavorite);
+  const hasFavorites = favoriteGames.length > 0;
 
   return (
     <div className="flex flex-col items-center justify-center bg-blue-150 min-h-screen">
@@ -257,48 +263,52 @@ const GameList: React.FC = () => {
             <>
               <SearchBar onSearch={handleSearch} />
               <div className="flex w-full justify-end mb-4">
-              <div className="flex items-center">
-                <span className="text-white mr-2">Sort by:</span>
-                <select
-                  value={sortOrder}
-                  onChange={(e) => handleSortOrderChange(e.target.value)}
-                  className="border border-blue-500 bg-white text-gray-900 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:border-blue-700"
-                >
-                  <option value="desc">Highest Rating</option>
-                  <option value="asc">Lowest Rating</option>
-                </select>
+                <div className="flex items-center">
+                  <span className="text-white mr-2">Sort by:</span>
+                  <select
+                    value={sortOrder}
+                    onChange={(e) => handleSortOrderChange(e.target.value as 'asc' | 'desc')}
+                    className="border border-blue-500 bg-white text-gray-900 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:border-blue-700"
+                  >
+                    <option value="desc">Highest Rating</option>
+                    <option value="asc">Lowest Rating</option>
+                  </select>
+                </div>
               </div>
-            </div>
               <div className="flex">
                 <GenreList
                   genres={genres}
                   selectedGenre={selectedGenre}
                   filterByGenre={filterByGenre}
-                  filterFavorites={filterFavorites}
-                  loading={loading}
+                  onFilterFavorites={filterFavorites}
                 />
                 <div className="flex flex-col items-center w-full">
-                  {loading && (
+                  {loading ? (
                     <div className="flex items-center justify-center my-10">
                       <Image className="w-14" src={loadgif} alt="Loading" />
                     </div>
-                  )}
-                  {!loading && (
+                  ) : selectedGenre === 'Favoritados' ? (
                     <>
-                      {selectedGenre === 'Favoritados' && !hasFavorites && (
+                      {!hasFavorites ? (
                         <div className="text-white text-xl mt-10">
-                          
-Favorite games so they appear here!
+                          Favorite games so they appear here!
                         </div>
-                      )}
-                      {selectedGenre !== 'Favoritados' && (
-                       <GameItemList
-                       sortedGames={sortedGames} // Alterado de gameList para sortedGames
-                       onRatingChange={handleRatingChange}
-                       onToggleFavorite={handleToggleFavorite}
-                     />
+                      ) : (
+                        <GameItemList
+                          sortedGames={sortedGames}
+                          favoriteGames={favoriteGames}
+                          onRatingChange={handleRatingChange}
+                          onToggleFavorite={handleToggleFavorite}
+                        />
                       )}
                     </>
+                  ) : (
+                    <GameItemList
+                      sortedGames={sortedGames}
+                      favoriteGames={favoriteGames}
+                      onRatingChange={handleRatingChange}
+                      onToggleFavorite={handleToggleFavorite}
+                    />
                   )}
                 </div>
               </div>

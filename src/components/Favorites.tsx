@@ -1,6 +1,7 @@
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as fasHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
 interface FavoritesProps {
@@ -28,12 +29,15 @@ const Favorites: React.FC<FavoritesProps> = ({ gameId, isFavorite, onToggleFavor
 
   return (
     <div>
-      <FontAwesomeIcon
+      <motion.div
         className="cursor-pointer"
-        icon={favorite ? fasHeartSolid : farHeart}
         onClick={handleFavoriteClick}
         style={{ color: favorite ? "red" : "gray" }}
-      />
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <FontAwesomeIcon icon={favorite ? fasHeartSolid : farHeart} />
+      </motion.div>
     </div>
   );
 };

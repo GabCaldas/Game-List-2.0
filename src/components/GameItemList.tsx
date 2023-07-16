@@ -14,12 +14,14 @@ interface Game {
 
 interface GameItemListProps {
   sortedGames: Game[];
+  favoriteGames: Game[]; // Adicionada a prop favoriteGames
   onRatingChange: (gameId: number, rating: number) => void;
   onToggleFavorite: (gameId: number, isFavorite: boolean) => void;
 }
 
 const GameItemList: React.FC<GameItemListProps> = ({
   sortedGames,
+  favoriteGames, // Adicionada a prop favoriteGames
   onRatingChange,
   onToggleFavorite,
 }) => {

@@ -8,39 +8,42 @@ interface Genre {
 
 interface GenreListProps {
   genres: Genre[];
+  selectedGenre: string;
   filterByGenre: (genreName: string) => void;
-  filterByRating: (rating: number) => void;
-  filterFavorites: () => void;
-  loading: boolean;
+  onFilterFavorites: () => void;
+  setGenres: React.Dispatch<React.SetStateAction<Genre[]>>;
 }
 
 const GenreList: React.FC<GenreListProps> = ({
   genres,
+  selectedGenre,
   filterByGenre,
-  filterByRating,
-  filterFavorites,
-  loading,
+  onFilterFavorites,
+  setGenres,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState('');
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const handleGenreClick = (genreName: string) => {
-    setSelectedGenre(genreName);
     filterByGenre(genreName);
+    setGenres((prevGenres) => {
+      return prevGenres.map((genre) => {
+        if (genre.name === genreName) {
+          return { ...genre, active: true };
+        } else {
+          return { ...genre, active: false };
+        }
+      });
+    });
+    setIsMenuOpen(false);
   };
 
   const handleFilterFavorites = () => {
-    setSelectedGenre('Favoritados');
-    filterFavorites();
-  };
-
-  const handleFilterByRating = () => {
-    setSelectedGenre('Avaliação');
-    filterByRating(1);
+    onFilterFavorites();
+    setIsMenuOpen(false);
   };
 
   const menuVariants = {
@@ -65,17 +68,12 @@ const GenreList: React.FC<GenreListProps> = ({
             transition={{ duration: 0.2 }}
           >
             <ul className="text-white">
-              {genres.map((genre) => (
-                <li
-                  key={genre.name}
-                  className={`cursor-pointer py-2 px-4 ${
-                    genre.active ? 'text-blue-200' : ''
-                  }`}
-                  onClick={() => handleGenreClick(genre.name)}
-                >
-                  {genre.name}
-                </li>
-              ))}
+              <li
+                className={`cursor-pointer py-2 px-4 ${selectedGenre === 'All' ? 'text-blue-200' : ''}`}
+                onClick={() => handleGenreClick('All')}
+              >
+                All
+              </li>
               <li
                 className={`cursor-pointer py-2 px-4 ${
                   selectedGenre === 'Favoritados' ? 'text-blue-200' : ''
@@ -84,14 +82,15 @@ const GenreList: React.FC<GenreListProps> = ({
               >
                 Favoritados
               </li>
-              <li
-                className={`cursor-pointer py-2 px-4 ${
-                  selectedGenre === 'Avaliação' ? 'text-blue-200' : ''
-                }`}
-                onClick={handleFilterByRating}
-              >
-                Avaliação
-              </li>
+              {genres.map((genre) => (
+                <li
+                  key={genre.name}
+                  className={`cursor-pointer py-2 px-4 ${genre.active ? 'text-blue-200' : ''}`}
+                  onClick={() => handleGenreClick(genre.name)}
+                >
+                  {genre.name}
+                </li>
+              ))}
             </ul>
           </motion.div>
         )}
