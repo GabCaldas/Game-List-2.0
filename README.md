@@ -2,6 +2,9 @@
 
 Essa é a fase 2 do projeto que foi desenvolvido como parte do processo seletivo da App Masters. É uma lista de jogos que permite filtrar os jogos por gênero, avaliar jogos, favoritá-los e ordená-los por número de estrelas. O objetivo do projeto é demonstrar habilidades em desenvolvimento web utilizando tecnologias como React.
 
+
+<img src="previews/previewvid.gif" alt="Imagem para dispositivos móveis" width="400">
+
 ## Funcionalidades do Projeto
 
 - Carrega e exibe uma lista de jogos a partir da API fornecida.
@@ -27,7 +30,7 @@ Essa é a fase 2 do projeto que foi desenvolvido como parte do processo seletivo
 
 ## Capturas de Tela
 Desktop
-<img src="previews/pc.png" alt="Imagem para desktop" width="600">
+<img src="previews/pc.png" alt="Imagem para dispositivos móveis" width="400">
 Mobile
 <img src="previews/mobile.jpeg" alt="Imagem para dispositivos móveis" width="400">
 <img src="previews/mobile2.jpeg" alt="Imagem para dispositivos móveis" width="400">
