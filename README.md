@@ -3,7 +3,7 @@
 Essa é a fase 2 do projeto que foi desenvolvido como parte do processo seletivo da App Masters. É uma lista de jogos que permite filtrar os jogos por gênero, avaliar jogos, favoritá-los e ordená-los por número de estrelas. O objetivo do projeto é demonstrar habilidades em desenvolvimento web utilizando tecnologias como React.
 
 
-<img src="previews/Screencast from 2023-07-16 20-59-25.gif" alt="Imagem para dispositivos móveis" width="400">
+<img src="previews/Screencast from 2023-07-16 20-59-25.gif" alt="Imagem para dispositivos móveis" width="800">
 
 
 ## Site
