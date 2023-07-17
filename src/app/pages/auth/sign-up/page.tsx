@@ -1,9 +1,10 @@
-
+'use client'
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import appmFull from 'src/app/assets/appmastersfull.png';
 
 const firebaseConfig = { apiKey: 
@@ -15,13 +16,13 @@ const firebaseConfig = { apiKey:
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const SignUp = () => {
+export default function SignUp() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
-  const navigate = useNavigate();
+  const navigate = useRouter();
 
   const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -39,7 +40,7 @@ const SignUp = () => {
   };
 
   const handleLoginRedirect = () => {
-    navigate('/');
+    navigate.push('/');
   };
 
   const handleCloseRegistrationPopup = () => {
@@ -99,7 +100,7 @@ const SignUp = () => {
               Already have an account?
             </p>
             <Link
-              to="/"
+              href="/"
               className="font-normal text-base underline text-white"
             >
               Login
@@ -161,5 +162,3 @@ const SignUp = () => {
     </div>
   );
 };
-
-export default SignUp;

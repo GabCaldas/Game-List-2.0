@@ -1,9 +1,11 @@
+'use client'
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation'
 import appmFull from 'src/app/assets/appmastersfull.png';
 
 const firebaseConfig = {
@@ -19,13 +21,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const LogIn = () => {
+export default function LogIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const navigate = useNavigate();
+  const router = useRouter()
+
+
 
   const handleSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -43,7 +47,7 @@ const LogIn = () => {
           await setDoc(userRef, { email: userCredential.user.email });
         }
 
-        navigate('/gamelist');
+        router.push('/pages/application/game-list');
       }
     } catch (error) {
       setError('Failed to sign in. Please try again.');
@@ -111,7 +115,7 @@ const LogIn = () => {
               Don't have an account?
             </p>
             <Link
-              to="/signup"
+              href="sign-up"
               className="font-normal text-base underline text-white"
             >
               Sign Up
@@ -122,5 +126,3 @@ const LogIn = () => {
     </div>
   );
 };
-
-export default LogIn;
