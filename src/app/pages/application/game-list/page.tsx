@@ -1,12 +1,12 @@
+'use client'
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import loadgif from '../app/assets/loading.gif';
-import GameItemList from '../components/GameItemList';
-import GenreList from '../components/GenreList';
-import Header from '../components/Header';
+import GameItemList from '../../../components/GameItemList';
+import GenreList from '../../../components/GenreList';
+import Header from '../../../components/Header';
 
-import SearchBar from '@/components/SearchBar';
+import SearchBar from '@/app/components/SearchBar';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 const firebaseConfig = {
@@ -287,7 +287,6 @@ const GameList: React.FC = () => {
                 <div className="flex flex-col items-center w-full">
                   {loading ? (
                     <div className="flex items-center justify-center my-10">
-                      <Image className="w-14" src={loadgif} alt="Loading" />
                     </div>
                   ) : selectedGenre === 'Favoritados' ? (
                     <>
