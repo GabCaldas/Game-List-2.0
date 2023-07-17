@@ -1,14 +1,13 @@
 'use client'
+import SearchBar from '@/app/components/SearchBar';
 import axios from 'axios';
-import Image from 'next/image';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import GameItemList from '../../../components/GameItemList';
 import GenreList from '../../../components/GenreList';
 import Header from '../../../components/Header';
-
-import SearchBar from '@/app/components/SearchBar';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
 const firebaseConfig = {
   apiKey: "AIzaSyDF6me6wK5ed-uUFk73ABAI0UZ9fteiHXI",
   authDomain: "react-gamelist.firebaseapp.com",
@@ -52,7 +51,7 @@ const GameList: React.FC = () => {
     Accept: 'application/json, text/plain, */*',
     'dev-email-address': 'gabrielcaldas7@gmail.com',
   };
-
+const router = useRouter();
   useEffect(() => {
     const apiTimeout = setTimeout(() => {
       setError('O servidor demorou para responder. Tente mais tarde.');
@@ -211,7 +210,7 @@ const GameList: React.FC = () => {
   };
 
   const handleReloadPage = () => {
-    window.location.href = '/';
+    router.push('/sign-in');
   };
 
   const ErrorPopup: React.FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {
