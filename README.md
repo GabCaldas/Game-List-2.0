@@ -36,7 +36,7 @@ Clique [aqui](https://game-list-2-0-3s1x.vercel.app/pages/auth/sign-in) para ace
 
 ## Capturas de Tela
 Desktop
-<img src="previews/previewgif.gif" alt="Imagem para dispositivos móveis" width="400">
+<img src="previews/previewvid.gif" alt="Imagem para dispositivos móveis" width="400">
 Mobile
 <img src="previews/mobile.jpeg" alt="Imagem para dispositivos móveis" width="400">
 <img src="previews/mobile2.jpeg" alt="Imagem para dispositivos móveis" width="400">
